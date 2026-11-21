@@ -53,7 +53,7 @@ The S3-compatible artwork bucket must stay private. Configure bucket CORS to per
 ## Deploy Frontend To Vercel
 
 1. Import the same GitHub repository into Vercel and leave **Root Directory** at the repository root, not `backend`.
-2. Vercel detects Next.js. Build command: `npm run build`; output is managed by Next.js.
+2. The checked-in `vercel.json` selects the Next.js framework and `.next` output. In Project Settings, clear any manually configured `dist` output directory (or set it to `.next`). Build command: `npm run build`.
 3. Set `NEXT_PUBLIC_API_BASE_URL=https://YOUR-RENDER-SERVICE.onrender.com` and `API_BASE_URL=https://YOUR-RENDER-SERVICE.onrender.com` for Production and Preview as appropriate. Redeploy after setting these values; `NEXT_PUBLIC_*` is embedded into the browser bundle at build time.
 4. Add the exact Vercel URL to Render's `FRONTEND_ORIGINS` and redeploy the backend if changed.
 5. Test the storefront, `GET /health`, `GET /api/services`, and an order lookup in each deployed environment.

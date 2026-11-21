@@ -37,7 +37,7 @@ Requirements: Node.js 22.x, npm, PostgreSQL 14+, and S3-compatible private objec
 
 ## Deploy Backend To Render
 
-1. Push this repository to GitHub and create a Render **Web Service** from it. Set **Root Directory** to `backend` (recommended). For an already-created service, update this setting in **Settings → Build & Deploy → Root Directory** and save it. The root build/start scripts also detect Render's `RENDER=true` variable and dispatch to the backend if the service is still rooted at the repository root. The backend `.node-version` and `backend/package.json` pin the service to Node 22.x.
+1. Push this repository to GitHub and create a Render **Web Service** from it. Set **Root Directory** to `backend` (recommended). For an already-created service, update this setting in **Settings → Build & Deploy → Root Directory** and save it. Root `build`, `db:migrate`, and `start` scripts also detect Render's `RENDER=true` variable and dispatch to the backend if the service is still rooted at the repository root. The backend `.node-version` and `backend/package.json` pin the service to Node 22.x.
 2. Set **Build Command** to `npm install && npm run db:generate && npm run build`.
 3. Set **Start Command** to `npm run db:migrate && npm start`.
 4. Attach a Render PostgreSQL database and set `DATABASE_URL` to its internal connection string.

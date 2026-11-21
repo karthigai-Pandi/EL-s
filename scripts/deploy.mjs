@@ -7,8 +7,8 @@ const backend = path.join(root, "backend");
 const action = process.argv[2];
 const isRender = process.env.RENDER === "true";
 
-if (action !== "build" && action !== "start") {
-  console.error("Usage: node scripts/deploy.mjs <build|start>");
+if (action !== "build" && action !== "start" && action !== "migrate") {
+  console.error("Usage: node scripts/deploy.mjs <build|start|migrate>");
   process.exit(2);
 }
 
@@ -30,8 +30,9 @@ if (isRender) {
     run("npm", ["install"], backend);
     run("npm", ["run", "db:generate"], backend);
     run("npm", ["run", "build"], backend);
-  } else {
+  } else if (action === "migrate") {
     run("npm", ["run", "db:migrate"], backend);
+  } else {
     run("npm", ["start"], backend);
   }
 } else {

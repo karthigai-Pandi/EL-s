@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "node scripts/deploy.mjs build",
     "start": "node scripts/deploy.mjs start",
+    "db:migrate": "node scripts/deploy.mjs migrate",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit"
   },

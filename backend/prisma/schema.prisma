@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  PENDING_PAYMENT
+  PAID
+  IN_PRODUCTION
+  READY
+  COMPLETED
+  CANCELLED
+  PAYMENT_FAILED
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  shortName   String
+  description String
+  ratePerSqft Decimal  @db.Decimal(10, 2)
+  active      Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  orders      Order[]
+}
+
+model PortfolioItem {
+  id          String   @id @default(cuid())
+  brand       String
+  title       String
+  category    String
+  summary     String
+  imageUrl    String?
+  featured    Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  orderNumber       String      @unique
+  serviceId         String
+  service           Service     @relation(fields: [serviceId], references: [id])
+  serviceName       String
+  widthFt           Decimal     @db.Decimal(9, 3)
+  heightFt          Decimal     @db.Decimal(9, 3)
+  areaSqft          Decimal     @db.Decimal(10, 3)
+  quantity          Int         @default(1)
+  ratePerSqft       Decimal     @db.Decimal(10, 2)
+  optionLabel       String
+  optionMultiplier  Decimal     @db.Decimal(5, 3)
+  totalPaise        Int
+  customerName      String
+  phone             String
+  email             String
+  fulfillment       String
+  address           String?
+  notes             String?
+  designFileKey     String
+  designFileName    String
+  status            OrderStatus @default(PENDING_PAYMENT)
+  paymentStatus     String      @default("CREATED")
+  razorpayOrderId   String?     @unique
+  razorpayPaymentId String?     @unique
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  paymentEvents     PaymentEvent[]
+
+  @@index([status, createdAt])
+  @@index([email])
+}
+
+model PaymentEvent {
+  id             String   @id @default(cuid())
+  gatewayEventId String   @unique
+  orderId        String?
+  order          Order?   @relation(fields: [orderId], references: [id])
+  eventType      String
+  payload        Json
+  processedAt    DateTime @default(now())
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 460" role="img" aria-labelledby="logo-title">
+  <title id="logo-title">EL's Studio</title>
+  <polygon fill="#2147b5" points="140,300 315,0 490,300"/>
+  <polygon fill="#ed0750" points="440,0 492,52 492,248 440,300"/>
+  <polygon fill="#f2cc00" points="493,0 640,150 493,300"/>
+  <text x="5" y="445" fill="#2147b5" font-family="Arial, Helvetica, sans-serif" font-size="110" font-weight="700" letter-spacing="-5">el&apos; studio</text>
+</svg>

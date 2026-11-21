@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">EL's Studio print installation</title>
+  <desc id="desc">Original illustration of a storefront window wrapped with vibrant vinyl campaign graphics.</desc>
+  <defs>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b9d6d4"/><stop offset=".52" stop-color="#7fa7a3"/><stop offset="1" stop-color="#243c41"/></linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e8e4dc"/><stop offset="1" stop-color="#c6c1b6"/></linearGradient>
+    <pattern id="dots" width="13" height="13" patternUnits="userSpaceOnUse"><circle cx="6.5" cy="6.5" r="2.1" fill="#ffffff" opacity=".55"/></pattern>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#wall)"/>
+  <rect x="95" y="90" width="1410" height="800" rx="8" fill="#262b2c"/>
+  <rect x="126" y="122" width="1348" height="736" fill="url(#glass)"/>
+  <path d="M126 122h1348v736H126z" fill="#132326" opacity=".08"/>
+  <path d="M220 122h7v736h-7zm390 0h8v736h-8zm390 0h8v736h-8z" fill="#e6e3db" opacity=".8"/>
+  <path d="M126 470h1348v388H126z" fill="#1f4db5"/>
+  <path d="M126 470h1348v388H126z" fill="url(#dots)" opacity=".48"/>
+  <path d="M126 470h460l-220 388H126z" fill="#ee0750"/>
+  <path d="M590 470h452L820 858H370z" fill="#f2cc00"/>
+  <path d="M1110 470h364v388h-585z" fill="#ed0750"/>
+  <path d="M930 508h464v5H930zm-48 18h512v3H882z" fill="#fff" opacity=".7"/>
+  <text x="178" y="655" fill="#fff" font-family="Arial,sans-serif" font-size="88" font-weight="800">MAKE IT</text>
+  <text x="178" y="744" fill="#fff" font-family="Arial,sans-serif" font-size="88" font-weight="800">VISIBLE.</text>
+  <text x="1195" y="681" fill="#1b1b1b" font-family="Arial,sans-serif" font-size="25" font-weight="700" transform="rotate(-90 1195 681)">PRINT / PLACE / REPEAT</text>
+  <path d="M126 858h1348v18H126z" fill="#242829"/>
+  <path d="M0 896h1600v104H0z" fill="#7c746b"/>
+  <path d="M0 910h1600v90H0z" fill="#b5aa9a" opacity=".5"/>
+  <path d="M160 120h5v736h-5zm1158 0h5v736h-5z" fill="#fff" opacity=".22"/>
+</svg>

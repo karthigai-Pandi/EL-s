@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" role="img" aria-labelledby="title desc">
+  <title id="title">Exhibition stall print and display</title>
+  <desc id="desc">An original concept illustration of a branded exhibition booth using large-format printed panels.</desc>
+  <rect width="900" height="640" fill="#e4e3df"/>
+  <path d="M70 550h760l-110 48H170z" fill="#b7b4af"/>
+  <path d="M125 152 472 66l305 91-334 97z" fill="#1b1e22"/>
+  <path d="M125 152v290l318 90V254z" fill="#2147b5"/>
+  <path d="M443 254v278l334-94V157z" fill="#17191d"/>
+  <path d="M125 152 472 66v115L125 267z" fill="#ed0750"/>
+  <path d="M472 66 777 157v102l-305-78z" fill="#f2cc00"/>
+  <path d="M154 296 410 224v167l-256 72z" fill="#f2cc00"/>
+  <path d="M478 296 744 224v152l-266 77z" fill="#2147b5"/>
+  <text x="173" y="356" fill="#17191d" font-family="Arial,sans-serif" font-weight="800" font-size="33">MAKE AN</text>
+  <text x="173" y="397" fill="#17191d" font-family="Arial,sans-serif" font-weight="800" font-size="33">ENTRANCE.</text>
+  <text x="514" y="349" fill="#fff" font-family="Arial,sans-serif" font-weight="800" font-size="29">PRINTED</text>
+  <text x="514" y="387" fill="#fff" font-family="Arial,sans-serif" font-weight="800" font-size="29">TO STAND OUT.</text>
+  <path d="M166 476h242v17l-242-69zm324-19 227-64v13l-227 65z" fill="#f8f8f7" opacity=".88"/>
+  <path d="M142 152v290m327-194v334" stroke="#f8f8f7" stroke-opacity=".26" stroke-width="7"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 640" role="img" aria-labelledby="title desc">
+  <title id="title">Colourful vinyl print graphics</title>
+  <desc id="desc">A collection of bold vinyl print samples in blue, red and yellow.</desc>
+  <rect width="900" height="640" fill="#e6e6e3"/>
+  <rect x="58" y="48" width="784" height="544" rx="20" fill="#f8f8f5"/>
+  <path d="M94 82h712v476H94z" fill="#2147b5"/>
+  <path d="M94 82h712v476H94z" fill="url(#grain)" opacity=".14"/>
+  <defs><pattern id="grain" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 8 8 0" stroke="#fff" stroke-width="1"/></pattern></defs>
+  <path d="M94 82h334L94 558z" fill="#f2cc00"/>
+  <path d="M428 82h378v240L566 558H94z" fill="#ed0750"/>
+  <path d="M94 395h712v163H94z" fill="#101820" opacity=".92"/>
+  <text x="130" y="485" fill="#fff" font-family="Arial,sans-serif" font-weight="800" font-size="64">COLOUR THAT</text>
+  <text x="130" y="540" fill="#fff" font-family="Arial,sans-serif" font-weight="800" font-size="54">STICKS AROUND.</text>
+  <circle cx="722" cy="190" r="50" fill="none" stroke="#fff" stroke-width="5"/>
+  <path d="M700 190h44m-22-22v44" stroke="#fff" stroke-width="5"/>
+</svg>

@@ -9,7 +9,7 @@ The Sony India homepage is used only as a high-level layout reference: compact b
 
 ## Local Development
 
-Requirements: Node.js 20.9+, npm, PostgreSQL 14+, and S3-compatible private object storage to test artwork uploads. Razorpay test credentials are needed to run checkout end to end.
+Requirements: Node.js 22.x, npm, PostgreSQL 14+, and S3-compatible private object storage to test artwork uploads. Razorpay test credentials are needed to run checkout end to end.
 
 1. Start PostgreSQL and create an empty `els_studio` database.
 2. In `backend`, copy `.env.example` to `.env`. Set `DATABASE_URL`, `ADMIN_TOKEN` (at least 24 characters), Razorpay test credentials, private bucket credentials, and `FRONTEND_ORIGINS=http://localhost:3000`.
@@ -37,11 +37,11 @@ Requirements: Node.js 20.9+, npm, PostgreSQL 14+, and S3-compatible private obje
 
 ## Deploy Backend To Render
 
-1. Push this repository to GitHub and create a Render **Web Service** from it. Set **Root Directory** to `backend`.
+1. Push this repository to GitHub and create a Render **Web Service** from it. Set **Root Directory** to `backend`. For an already-created service, update this setting in **Settings → Build & Deploy → Root Directory** and save it; a root-level deployment will run the Next.js frontend and fail to build the API. The backend `.node-version` and `backend/package.json` pin the service to Node 22.x.
 2. Set **Build Command** to `npm install && npm run db:generate && npm run build`.
 3. Set **Start Command** to `npm run db:migrate && npm start`.
 4. Attach a Render PostgreSQL database and set `DATABASE_URL` to its internal connection string.
-5. Add the variables from `backend/.env.example`: `ADMIN_TOKEN`, `FRONTEND_ORIGINS`, `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, and optional `S3_ENDPOINT`. Set `FRONTEND_ORIGINS` to the exact Vercel production URL and intended preview origins.
+5. Add the variables from `backend/.env.example`: `NODE_ENV=production`, `ADMIN_TOKEN`, `FRONTEND_ORIGINS`, `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, and optional `S3_ENDPOINT`. Set `FRONTEND_ORIGINS` to the exact Vercel production URL and intended preview origins. Do not set `NODE_ENV` to `development`, `dev`, or another non-standard value on Render.
 6. After the first deploy, run `npm run db:seed` once from Render Shell. The seed does not overwrite existing prices or portfolio copy.
 7. Verify `https://YOUR-RENDER-SERVICE.onrender.com/health` returns `{"status":"ok","service":"els-studio-api"}`.
 8. Configure Razorpay's webhook URL as `https://YOUR-RENDER-SERVICE.onrender.com/api/payments/webhook`, subscribe to `payment.captured` and `payment.failed`, and set the signing secret as `RAZORPAY_WEBHOOK_SECRET`.

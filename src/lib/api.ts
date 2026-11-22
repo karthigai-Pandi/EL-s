@@ -1,9 +1,11 @@
 export function clientApiUrl(path: string) {
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
-  return `${base.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
+  const normalizedPath = path.replace(/^\//, "");
+  return normalizedPath.startsWith("api/")
+    ? `/${normalizedPath}`
+    : `/api/${normalizedPath}`;
 }
 
 export function serverApiUrl(path: string) {
-  const base = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000";
+  const base = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "https://el-s.onrender.com";
   return `${base.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
 }

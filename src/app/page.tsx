@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { OrderBuilder } from "@/components/order-builder";
 import { StudioLogo } from "@/components/studio-logo";
 import { ScrollReveal } from "@/components/scroll-reveal";
-import { ArrowDownRight, ArrowUpRight, MoveUpRight } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Instagram, MapPin, MessageCircle, MoveUpRight, Navigation, Phone } from "lucide-react";
 
 async function getHomeData() {
   try {
@@ -129,8 +129,42 @@ export default async function HomePage() {
           </div>
         </section>
 
+        <section className="branding-section section-pad" id="branding-partners" data-reveal>
+          <div className="section-heading">
+            <div><p className="eyebrow">05 / Brand partnerships</p><h2>Our Branding<br /><em>Companies</em></h2></div>
+          </div>
+          <div className="branding-row" aria-label="Our branding companies">
+            {["Essilor", "Airtel", "Lexar"].map((company) => (
+              <a href={`/work/${slugify(company)}`} key={company}>{company}<ArrowUpRight size={17} /></a>
+            ))}
+          </div>
+        </section>
+
+        <section className="location-section" id="location" data-reveal>
+          <div className="location-details">
+            <p className="eyebrow">EL Studio location</p>
+            <h2>Visit the<br /><em>studio.</em></h2>
+            <div className="contact-links">
+              <a href="tel:+918122669322"><Phone size={17} /> 8122669322</a>
+              <a href="https://wa.me/918122669322" target="_blank" rel="noopener noreferrer"><MessageCircle size={17} /> WhatsApp 8122669322</a>
+              <a href="https://www.instagram.com/el_studio2022/" target="_blank" rel="noopener noreferrer"><Instagram size={17} /> @el_studio2022</a>
+            </div>
+            <a className="directions-link" href="https://www.google.com/maps/place/EL+studio/@9.9166548,78.1231916,17z/data=!3m1!4b1!4m6!3m5!1s0x3b00c5001d3ce859:0x10c85bfc799e4a22!8m2!3d9.9166495!4d78.1257665!16s%2Fg%2F11msln8df4" target="_blank" rel="noopener noreferrer"><Navigation size={16} /> Get Directions</a>
+          </div>
+          <div className="location-map">
+            <iframe
+              title="EL Studio location map"
+              src="https://www.google.com/maps?q=9.9166495,78.1257665&z=17&output=embed"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+            <span><MapPin size={14} /> EL Studio</span>
+          </div>
+        </section>
+
         <footer className="site-footer" id="contact">
-          <div className="footer-top"><a className="brand-lockup footer-brand" href="#top" aria-label="EL's Studio home"><StudioLogo light /></a><p>Print with purpose.<br />Make it count.</p><a className="footer-contact" href="mailto:hello@elsstudio.in">hello@elsstudio.in <MoveUpRight size={16} /></a></div>
+          <div className="footer-top"><a className="brand-lockup footer-brand" href="#top" aria-label="EL's Studio home"><StudioLogo light /></a><p>Print with purpose.<br />Make it count.</p><div className="footer-contact"><a href="tel:+918122669322"><Phone size={15} /> 8122669322</a><a href="https://wa.me/918122669322" target="_blank" rel="noopener noreferrer"><MessageCircle size={15} /> WhatsApp</a><a href="https://www.instagram.com/el_studio2022/" target="_blank" rel="noopener noreferrer"><Instagram size={15} /> Instagram</a></div></div>
           <div className="footer-bottom"><span>© {new Date().getFullYear()} EL&apos;s Studio</span><span>Made with care in India</span><a href="#top">Back to top ↑</a><a href="/admin">Studio admin</a></div>
         </footer>
       </main>

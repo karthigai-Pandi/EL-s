@@ -96,16 +96,21 @@ export function OrderBuilder({ services }: { services: ServiceView[] }) {
 
   async function uploadArtwork(): Promise<UploadMeta> {
     if (!file) throw new Error("Add your artwork file to continue.");
-    const presignResponse = await fetch(clientApiUrl("api/uploads/presign"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fileName: file.name, contentType: file.type || "application/octet-stream", fileSize: file.size }),
-    });
-    const presign = await presignResponse.json();
-    if (!presignResponse.ok) throw new Error(presign.error ?? "Could not prepare your artwork upload.");
-    const uploadResponse = await fetch(presign.uploadUrl, { method: "PUT", headers: { "Content-Type": presign.contentType }, body: file });
-    if (!uploadResponse.ok) throw new Error("Your artwork did not finish uploading. Please try again.");
-    return { key: presign.key, name: file.name };
+    try {
+      const presignResponse = await fetch(clientApiUrl("api/uploads/presign"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileName: file.name, contentType: file.type || "application/octet-stream", fileSize: file.size }),
+      });
+      const presign = await presignResponse.json();
+      if (!presignResponse.ok) throw new Error(presign.error ?? "Could not prepare your artwork upload.");
+      const uploadResponse = await fetch(presign.uploadUrl, { method: "PUT", headers: { "Content-Type": presign.contentType }, body: file });
+      if (!uploadResponse.ok) throw new Error("Your artwork did not finish uploading. Please try again.");
+      return { key: presign.key, name: file.name };
+    } catch (error) {
+      if (error instanceof TypeError) throw new Error("We could not reach the checkout service. Please check your connection and try again.");
+      throw error;
+    }
   }
 
   async function submitOrder(event: FormEvent<HTMLFormElement>) {
@@ -115,19 +120,30 @@ export function OrderBuilder({ services }: { services: ServiceView[] }) {
     try {
       if (!selectedService || area <= 0) throw new Error("Enter a width and height greater than zero.");
       const artwork = await uploadArtwork();
-      const orderResponse = await fetch(clientApiUrl("api/orders"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          serviceSlug, widthFt: widthValue, heightFt: heightValue,
-          widthFeet, widthInches, heightFeet, heightInches, quantity, finish,
-          customerName: customer.name, phone: customer.phone, email: customer.email,
-          fulfillment: customer.fulfillment, address: customer.fulfillment === "delivery" ? customer.address : "",
-          notes: customer.notes, designFileKey: artwork.key, designFileName: artwork.name,
-        }),
-      });
-      const order: CheckoutPayload & { error?: string } = await orderResponse.json();
-      if (!orderResponse.ok) throw new Error(order.error ?? "We could not create your order.");
+      let order: CheckoutPayload & { error?: string };
+      try {
+        const orderResponse = await fetch(clientApiUrl("api/orders"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            serviceSlug, widthFt: widthValue, heightFt: heightValue,
+            widthFeet, widthInches, heightFeet, heightInches, quantity, finish,
+            customerName: customer.name, phone: customer.phone, email: customer.email,
+            fulfillment: customer.fulfillment, address: customer.fulfillment === "delivery" ? customer.address : "",
+            notes: customer.notes, designFileKey: artwork.key, designFileName: artwork.name,
+          }),
+        });
+        const responseText = await orderResponse.text();
+        try {
+          order = JSON.parse(responseText) as CheckoutPayload & { error?: string };
+        } catch {
+          throw new Error("The checkout service returned an invalid response.");
+        }
+        if (!orderResponse.ok) throw new Error(order.error ?? "We could not create your order.");
+      } catch (error) {
+        if (error instanceof TypeError) throw new Error("We could not reach the payment service. Please try again.");
+        throw error;
+      }
       const Razorpay = await getRazorpay();
       const checkout = new Razorpay({
         key: order.key,
@@ -144,7 +160,13 @@ export function OrderBuilder({ services }: { services: ServiceView[] }) {
               method: "POST", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ orderNumber: order.orderNumber, ...response }),
             });
-            const result = await verify.json();
+            const verificationText = await verify.text();
+            let result: { ok?: boolean; error?: string };
+            try {
+              result = JSON.parse(verificationText) as { ok?: boolean; error?: string };
+            } catch {
+              throw new Error("The payment confirmation service returned an invalid response.");
+            }
             if (!verify.ok) throw new Error(result.error ?? "Payment verification is still processing.");
             router.push(`/order/${order.orderNumber}`);
           } catch (error) {

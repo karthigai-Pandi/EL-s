@@ -33,7 +33,9 @@ export function OrderBuilder({ services }: { services: ServiceView[] }) {
   const router = useRouter();
   const [serviceSlug, setServiceSlug] = useState(services[0]?.slug ?? "vinyl");
   const [width, setWidth] = useState("3");
+  const [widthIn, setWidthIn] = useState("0");
   const [height, setHeight] = useState("2");
+  const [heightIn, setHeightIn] = useState("0");
   const [quantity, setQuantity] = useState(1);
   const [finish, setFinish] = useState<(typeof finishOptions)[number]["id"]>("standard");
   const [file, setFile] = useState<File | null>(null);
@@ -44,8 +46,12 @@ export function OrderBuilder({ services }: { services: ServiceView[] }) {
 
   const selectedService = services.find((service) => service.slug === serviceSlug) ?? services[0];
   const selectedFinish = finishOptions.find((option) => option.id === finish) ?? finishOptions[0];
-  const widthValue = Number(width) || 0;
-  const heightValue = Number(height) || 0;
+  const widthFeet = Number(width) || 0;
+  const widthInches = Number(widthIn) || 0;
+  const heightFeet = Number(height) || 0;
+  const heightInches = Number(heightIn) || 0;
+  const widthValue = widthFeet + widthInches / 12;
+  const heightValue = heightFeet + heightInches / 12;
   const area = widthValue * heightValue;
   const total = useMemo(() => (selectedService?.ratePerSqft ?? 0) * area * quantity * selectedFinish.multiplier, [selectedService, area, quantity, selectedFinish]);
 
@@ -113,7 +119,8 @@ export function OrderBuilder({ services }: { services: ServiceView[] }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          serviceSlug, widthFt: widthValue, heightFt: heightValue, quantity, finish,
+          serviceSlug, widthFt: widthValue, heightFt: heightValue,
+          widthFeet, widthInches, heightFeet, heightInches, quantity, finish,
           customerName: customer.name, phone: customer.phone, email: customer.email,
           fulfillment: customer.fulfillment, address: customer.fulfillment === "delivery" ? customer.address : "",
           notes: customer.notes, designFileKey: artwork.key, designFileName: artwork.name,
@@ -166,11 +173,13 @@ export function OrderBuilder({ services }: { services: ServiceView[] }) {
         <div className="select-wrap"><select id="service" value={serviceSlug} onChange={(event) => setServiceSlug(event.target.value)}>{services.map((service) => <option value={service.slug} key={service.slug}>{service.name}</option>)}</select><ChevronDown size={17} /></div>
         {selectedService && <p className="field-hint">{selectedService.description}</p>}
 
-        <label className="field-label dimensions-label">02 <span>Size in feet</span><small>width × height</small></label>
+        <label className="field-label dimensions-label">02 <span>Size</span><small>width × height</small></label>
         <div className="dimension-grid">
-          <label><span>Width</span><div className="input-unit"><input aria-label="Width in feet" type="number" min="0.1" max="1000" step="0.1" value={width} onChange={(event) => setWidth(event.target.value)} required /><small>ft</small></div></label>
+          <label><span>Width Ft</span><div className="input-unit"><input aria-label="Width in feet" type="number" min="0" max="1000" step="1" value={width} onChange={(event) => setWidth(event.target.value)} required /><small>ft</small></div></label>
+          <label><span>Width Inch</span><div className="input-unit"><input aria-label="Width in inches" type="number" min="0" max="11.99" step="0.01" value={widthIn} onChange={(event) => setWidthIn(event.target.value)} required /><small>in</small></div></label>
           <span className="dimension-times">×</span>
-          <label><span>Height</span><div className="input-unit"><input aria-label="Height in feet" type="number" min="0.1" max="1000" step="0.1" value={height} onChange={(event) => setHeight(event.target.value)} required /><small>ft</small></div></label>
+          <label><span>Height Ft</span><div className="input-unit"><input aria-label="Height in feet" type="number" min="0" max="1000" step="1" value={height} onChange={(event) => setHeight(event.target.value)} required /><small>ft</small></div></label>
+          <label><span>Height Inch</span><div className="input-unit"><input aria-label="Height in inches" type="number" min="0" max="11.99" step="0.01" value={heightIn} onChange={(event) => setHeightIn(event.target.value)} required /><small>in</small></div></label>
           <div className="quantity-control"><span>Qty</span><div><button type="button" aria-label="Decrease quantity" onClick={() => setQuantity(Math.max(1, quantity - 1))}><Minus size={13} /></button><strong>{quantity}</strong><button type="button" aria-label="Increase quantity" onClick={() => setQuantity(Math.min(500, quantity + 1))}><Plus size={13} /></button></div></div>
         </div>
         <div className="area-inline"><span>Calculated area</span><strong>{area.toFixed(2)} sq ft <small>× {quantity} {quantity === 1 ? "copy" : "copies"}</small></strong></div>

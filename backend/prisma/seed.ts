@@ -15,9 +15,11 @@ const services = [
 ];
 
 const portfolio = [
-  { brand: "Essilor", title: "A clearer kind of retail presence", category: "Retail graphics", summary: "Representative concept for coordinated storefront and in-store communication. Replace with approved project images and verified outcomes.", featured: true, sortOrder: 1 },
-  { brand: "Airtel", title: "Campaign colour, made visible", category: "Campaign printing", summary: "Representative concept for high-impact campaign graphics. This is illustrative copy, not a claim of commissioned work.", featured: true, sortOrder: 2 },
-  { brand: "Lexar", title: "Product storytelling at the point of sale", category: "Display graphics", summary: "Representative concept for retail display graphics. Replace with approved images and verified project details before publication.", featured: true, sortOrder: 3 },
+  { brand: "Essilor", title: "A clearer kind of retail presence", category: "Retail graphics", summary: "A coordinated exhibition and retail presentation created for Essilor.", imageUrl: "/images/Essilor (1).png", featured: true, sortOrder: 1 },
+  { brand: "Airtel", title: "Campaign colour, made visible", category: "Campaign printing", summary: "Campaign and display graphics developed for Airtel.", imageUrl: "/images/exhibition-graphics.svg", featured: true, sortOrder: 2 },
+  { brand: "Lexar", title: "Product storytelling at the point of sale", category: "Display graphics", summary: "Retail display and branded presentation work for Lexar.", imageUrl: "/images/Lexar (1).png", featured: true, sortOrder: 3 },
+  { brand: "Stall 1", title: "An exhibition space with presence", category: "Exhibition stall", summary: "Exhibition stall design and printed brand environment.", imageUrl: "/images/Stall 1 (1).jpeg", featured: true, sortOrder: 4 },
+  { brand: "Stall 2", title: "A considered show-floor experience", category: "Exhibition stall", summary: "Exhibition stall planning, fabrication and visual graphics.", imageUrl: "/images/Stall 2 (1).jpeg", featured: true, sortOrder: 5 },
 ];
 
 async function main() {
@@ -29,9 +31,9 @@ async function main() {
   }
   for (const item of portfolio) {
     const id = `seed-${item.brand.toLowerCase()}`;
-    if (!await prisma.portfolioItem.findUnique({ where: { id }, select: { id: true } })) {
-      await prisma.portfolioItem.create({ data: { id, ...item } });
-    }
+    const existing = await prisma.portfolioItem.findUnique({ where: { id }, select: { id: true } });
+    if (existing) await prisma.portfolioItem.update({ where: { id }, data: item });
+    else await prisma.portfolioItem.create({ data: { id, ...item } });
   }
 }
 

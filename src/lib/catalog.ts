@@ -27,9 +27,11 @@ export const fallbackServices: ServiceView[] = [
 ];
 
 export const fallbackPortfolio: PortfolioView[] = [
-  { brand: "Studio study 01", title: "Colour that stays in view", category: "Vinyl printing", summary: "An illustrative vinyl campaign concept using layered colour and durable large-format graphics.", imageUrl: "/images/vinyl-print.svg" },
-  { brand: "Studio study 02", title: "A window becomes a canvas", category: "One-way vision", summary: "An illustrative perforated-film concept that balances street-facing graphics with inside visibility.", imageUrl: "/images/one-way-vision.svg" },
-  { brand: "Studio study 03", title: "A stand with a point of view", category: "Exhibition graphics", summary: "An illustrative exhibition environment showing how printed panels can shape a brand space.", imageUrl: "/images/exhibition-graphics.svg" },
+  { brand: "Essilor", title: "A clearer kind of retail presence", category: "Retail graphics", summary: "A coordinated exhibition and retail presentation created for Essilor.", imageUrl: "/images/Essilor (1).png" },
+  { brand: "Airtel", title: "Campaign colour, made visible", category: "Campaign printing", summary: "Campaign and display graphics developed for Airtel.", imageUrl: "/images/exhibition-graphics.svg" },
+  { brand: "Lexar", title: "Product storytelling at the point of sale", category: "Display graphics", summary: "Retail display and branded presentation work for Lexar.", imageUrl: "/images/Lexar (1).png" },
+  { brand: "Stall 1", title: "An exhibition space with presence", category: "Exhibition stall", summary: "Exhibition stall design and printed brand environment.", imageUrl: "/images/Stall 1 (1).jpeg" },
+  { brand: "Stall 2", title: "A considered show-floor experience", category: "Exhibition stall", summary: "Exhibition stall planning, fabrication and visual graphics.", imageUrl: "/images/Stall 2 (1).jpeg" },
 ];
 
 export const finishOptions = [

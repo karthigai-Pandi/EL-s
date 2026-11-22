@@ -5,10 +5,10 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { StudioLogo } from "@/components/studio-logo";
 
 const links = [
-  { href: "#services", label: "Services" },
-  { href: "#work", label: "Print gallery" },
-  { href: "#process", label: "How it works" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#services", label: "Services" },
+  { href: "/#work", label: "Print gallery" },
+  { href: "/#process", label: "How it works" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function SiteHeader() {

@@ -106,12 +106,14 @@ export default async function HomePage() {
           <div className="work-grid">
             {projects.map((project, index) => (
               <article className={`work-card work-card-${index + 1}`} key={project.brand}>
+                <a href={`/work/${slugify(project.brand)}`} aria-label={`View ${project.brand} project`}>
                 <div className="work-image" role="img" aria-label={`${project.category} concept: ${project.title}`} style={{ backgroundImage: `url("${project.imageUrl}")` }}>
                   <span className="work-number">0{index + 1}</span>
                   <span className="work-chip">Representative concept</span>
                   <span className="work-wordmark">{project.brand}</span>
                 </div>
                 <div className="work-info"><div><p className="eyebrow">{project.category}</p><h3>{project.title}</h3><p>{project.summary}</p></div><ArrowUpRight size={19} /></div>
+                </a>
               </article>
             ))}
           </div>
@@ -138,4 +140,8 @@ export default async function HomePage() {
 
 function formatServiceRate(rate: number) {
   return new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 }).format(rate);
+}
+
+function slugify(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }

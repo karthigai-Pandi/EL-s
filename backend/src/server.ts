@@ -30,7 +30,16 @@ app.use(cors({
   origin(origin, callback) {
     const allowed = (process.env.FRONTEND_ORIGINS ?? "http://localhost:3000")
       .split(",").map((value) => value.trim()).filter(Boolean);
-    if (!origin || allowed.includes(origin)) return callback(null, true);
+    let previewOrigin = false;
+    if (origin) {
+      try {
+        const hostname = new URL(origin).hostname;
+        previewOrigin = hostname === "localhost" || hostname.endsWith(".vercel.app");
+      } catch {
+        previewOrigin = false;
+      }
+    }
+    if (!origin || allowed.includes(origin) || previewOrigin) return callback(null, true);
     return callback(new Error("Origin is not allowed by CORS."));
   },
   methods: ["GET", "POST", "PATCH", "OPTIONS"],
@@ -111,8 +120,12 @@ app.post("/api/uploads/presign", express.json({ limit: "10kb" }), asyncRoute(asy
 
 const orderSchema = z.object({
   serviceSlug: z.string().min(1).max(80),
-  widthFt: z.number().finite().min(0.1).max(1000),
-  heightFt: z.number().finite().min(0.1).max(1000),
+  widthFt: z.number().finite().min(0).max(1000),
+  heightFt: z.number().finite().min(0).max(1000),
+  widthFeet: z.number().finite().min(0).max(1000).optional(),
+  widthInches: z.number().finite().min(0).max(11.99).optional(),
+  heightFeet: z.number().finite().min(0).max(1000).optional(),
+  heightInches: z.number().finite().min(0).max(11.99).optional(),
   quantity: z.number().int().min(1).max(500),
   finish: z.enum(["standard", "matte", "gloss", "weatherproof"]),
   customerName: z.string().trim().min(2).max(100),
@@ -148,6 +161,7 @@ app.post("/api/orders", express.json({ limit: "20kb" }), asyncRoute(async (reque
   const order = await prisma.order.create({ data: {
     orderNumber, serviceId: service.id, serviceName: service.name,
     widthFt: input.widthFt, heightFt: input.heightFt, areaSqft, quantity: input.quantity,
+    widthFeet: input.widthFeet, widthInches: input.widthInches, heightFeet: input.heightFeet, heightInches: input.heightInches,
     ratePerSqft, optionLabel: input.finish, optionMultiplier: finish, totalPaise,
     customerName: input.customerName, phone: input.phone, email: input.email.toLowerCase(),
     fulfillment: input.fulfillment, address: input.fulfillment === "delivery" ? input.address : null,
@@ -161,6 +175,13 @@ app.post("/api/orders", express.json({ limit: "20kb" }), asyncRoute(async (reque
     response.status(201).json({ key: keyId, orderNumber, razorpayOrderId: gatewayOrder.id, amount: totalPaise, currency: "INR" });
   } catch (error) {
     await prisma.order.update({ where: { id: order.id }, data: { status: "PAYMENT_FAILED", paymentStatus: "CREATION_FAILED" } });
+    const message = error instanceof Error ? error.message : "";
+    if (message.includes("Razorpay is not configured")) {
+      return response.status(503).json({ error: "Secure payment is temporarily unavailable. Razorpay credentials have not been configured." });
+    }
+    if (message.toLowerCase().includes("authentication") || message.toLowerCase().includes("razorpay")) {
+      return response.status(502).json({ error: "The payment gateway rejected the checkout request. Check the Razorpay credentials." });
+    }
     throw error;
   }
 }));

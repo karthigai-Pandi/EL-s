@@ -51,6 +51,10 @@ model Order {
   serviceName       String
   widthFt           Decimal     @db.Decimal(9, 3)
   heightFt          Decimal     @db.Decimal(9, 3)
+  widthFeet         Decimal?    @db.Decimal(9, 3)
+  widthInches       Decimal?    @db.Decimal(5, 2)
+  heightFeet        Decimal?    @db.Decimal(9, 3)
+  heightInches      Decimal?    @db.Decimal(5, 2)
   areaSqft          Decimal     @db.Decimal(10, 3)
   quantity          Int         @default(1)
   ratePerSqft       Decimal     @db.Decimal(10, 2)
